@@ -1,0 +1,50 @@
+DROP TABLE IF EXISTS Etudiant ;
+CREATE TABLE Etudiant (numCINEtu_Etudiant CHAR(20) AUTO_INCREMENT NOT NULL,
+nomEtu_Etudiant CHAR(40),
+pronomEtu_Etudiant CHAR(25),
+dateNaissance_Etudiant DATE,
+adresseEtu_Etudiant CHAR(40),
+villeEtu_Etudiant CHAR(30),
+niveauEtu_Etudiant CHAR(25),
+PRIMARY KEY (numCINEtu_Etudiant)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Session ;
+CREATE TABLE Session (codeSess_Session INT(20) AUTO_INCREMENT NOT NULL,
+nomSess_Session CHAR(20),
+dateDebut_Session DATE,
+dateFin_Session DATE,
+codeForm_Formation **NOT FOUND**(20),
+PRIMARY KEY (codeSess_Session)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Formation ;
+CREATE TABLE Formation (codeForm_Formation INT(20) AUTO_INCREMENT NOT NULL,
+titreForm_Formation CHAR(25),
+dureeForm_Formation CHAR(25),
+prixForm_Formation CHAR(25),
+PRIMARY KEY (codeForm_Formation)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Specialite ;
+CREATE TABLE Specialite (codeSpec_Specialite INT(25) AUTO_INCREMENT NOT NULL,
+nomSpec_Specialite CHAR(25),
+descSpec_Specialite CHAR(25),
+PRIMARY KEY (codeSpec_Specialite)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Inscription ;
+CREATE TABLE Inscription (numCINEtu_Etudiant **NOT FOUND**(20) AUTO_INCREMENT NOT NULL,
+codeSess_Session **NOT FOUND**(20) NOT NULL,
+typecours_est inscrit CHAR(25),
+PRIMARY KEY (numCINEtu_Etudiant,
+ codeSess_Session)) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS Combinaison ;
+CREATE TABLE Combinaison (codeForm_Formation **NOT FOUND**(20) AUTO_INCREMENT NOT NULL,
+codeSpec_Specialite **NOT FOUND**(20) NOT NULL,
+PRIMARY KEY (codeForm_Formation,
+ codeSpec_Specialite)) ENGINE=InnoDB;
+
+ALTER TABLE Session ADD CONSTRAINT FK_Session_codeForm_Formation FOREIGN KEY (codeForm_Formation) REFERENCES Formation (codeForm_Formation);
+
+ALTER TABLE Inscription ADD CONSTRAINT FK_Inscription_numCINEtu_Etudiant FOREIGN KEY (numCINEtu_Etudiant) REFERENCES Etudiant (numCINEtu_Etudiant);
+ALTER TABLE Inscription ADD CONSTRAINT FK_Inscription_codeSess_Session FOREIGN KEY (codeSess_Session) REFERENCES Session (codeSess_Session);
+ALTER TABLE Combinaison ADD CONSTRAINT FK_Combinaison_codeForm_Formation FOREIGN KEY (codeForm_Formation) REFERENCES Formation (codeForm_Formation);
+ALTER TABLE Combinaison ADD CONSTRAINT FK_Combinaison_codeSpec_Specialite FOREIGN KEY (codeSpec_Specialite) REFERENCES Specialite (codeSpec_Specialite);
